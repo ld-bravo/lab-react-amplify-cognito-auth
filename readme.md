@@ -1,6 +1,6 @@
 ## App creation steps
 
-1. Create app with vite
+1. Create app with vite and add it to GitHub repository
 
   ```
   npm create vite@latest [app-name or "."]
@@ -25,7 +25,8 @@ The next dependencies are added:
  - tsx
  - esbuild
 
-3. 
+3. Deploy on AWS Amplify
+4. Download amplify_outputs.json file from AWS Amplify Deployment
 
 ---
 
