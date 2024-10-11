@@ -1,3 +1,34 @@
+## App creation steps
+
+1. Create app with vite
+
+  ```
+  npm create vite@latest [app-name or "."]
+  ```
+
+  [app-name] will be the new directory created for the app, or you can use "." to create the app in the current folder.
+
+2. Add amplify
+
+  ```
+  npm create amplify@latest
+  ```
+
+The next dependencies are added:
+
+ - @aws-amplify/backend
+ - @aws-amplify/backend-cli
+ - aws-cdk@^2
+ - aws-cdk-lib@^2
+ - constructs@^10.0.0
+ - typescript@^5.0.0
+ - tsx
+ - esbuild
+
+3. 
+
+---
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
