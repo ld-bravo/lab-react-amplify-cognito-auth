@@ -27,6 +27,11 @@ The next dependencies are added:
 
 3. Deploy on AWS Amplify
 4. Download amplify_outputs.json file from AWS Amplify Deployment
+5. Add react router
+
+    npm i --save react-router-dom
+
+To implement authentication Follow documentation to add sign-up, sign-in, sign-out calls https://docs.amplify.aws/react/build-a-backend/auth/connect-your-frontend/
 
 ---
 
