@@ -1,6 +1,7 @@
 import "./LoginForm.scss";
 import { useFormik } from "formik";
 import { signIn } from 'aws-amplify/auth';
+import { useNavigate } from "react-router-dom";
 
 // A custom validation function. This must return an object
 // which keys are symmetrical to our values/initialValues
@@ -25,6 +26,8 @@ interface LoginFormProps {
 }
 
 const LoginForm = ({updateAuthStatus}: LoginFormProps) => {
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -40,6 +43,7 @@ const LoginForm = ({updateAuthStatus}: LoginFormProps) => {
         });
         console.log("sign in response: ", signInResponse);
         updateAuthStatus(true);
+        navigate("/");
       } catch (error) {
         console.log("SignIn error: ", error)
       }
