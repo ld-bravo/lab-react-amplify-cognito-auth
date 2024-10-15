@@ -1,66 +1,72 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
-
-// function App() {
-//   const [count, setCount] = useState(0)
-
-//   return (
-//     <>
-//       <div>
-//         <a href="https://vitejs.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://react.dev" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React</h1>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-//         <p>
-//           Edit <code>src/App.tsx</code> and save to test HMR
-//         </p>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite and React logos to learn more
-//       </p>
-//     </>
-//   )
-// }
-
-// export default App
-
-// import type { AppProps } from 'next/app';
-import "./App.css"
-import { Authenticator } from '@aws-amplify/ui-react';
-import { Amplify } from 'aws-amplify';
+// import { Authenticator } from "@aws-amplify/ui-react";
+import "./App.scss"
+import "@aws-amplify/ui-react/styles.css";
+import { Amplify } from "aws-amplify";
+import { Route, Routes } from "react-router-dom";
+import { useEffect, useState } from "react";
+import Footer from "./components/Footer/Footer";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
 import outputs from "../amplify_outputs.json";
-import '@aws-amplify/ui-react/styles.css';
+import SiteNav from "./components/SiteNav/SiteNav";
+import { getCurrentUser } from 'aws-amplify/auth';
 
 Amplify.configure(outputs);
 
-// interface AppProps {
-//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//   Component: any;
-//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//   pageProps: any;
-// }
-
-// export default function App({ Component, pageProps }: AppProps) {
 export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [localSignInDetails, setLocalSignInDetails] = useState<any>(null);
+
+  useEffect(() => {
+    loadCurrentUser();
+  }, []);
+
+  const loadCurrentUser = async() => {
+    try {
+      const { username, userId, signInDetails } = await getCurrentUser();
+      console.log("username: ", username);
+      console.log("userId: ", userId);
+      console.log("signInDetails: ", signInDetails);
+
+      setLocalSignInDetails(signInDetails);
+
+      if (signInDetails) {
+        setIsAuthenticated(true);
+      }
+    } catch (error) {
+      console.log("Error retrieving current user.");
+    }
+  };
+
+  const updateAuthStatus = (value: boolean) => {
+    setIsAuthenticated(value);
+  };
+
   return (
-    <Authenticator>
-      {({ signOut, user }) => (
-        <main>
-          <h1>Hello {user?.username}</h1>
-          <button onClick={signOut}>Sign out</button>
-          {/* <Component {...pageProps} /> */}
-        </main>
-      )}
-    </Authenticator>
+    // <Authenticator>
+    //   {({ signOut, user }) => (
+    //     <main>
+    //       <h1>Hello {user?.username}</h1>
+    //       <button onClick={signOut}>Sign out</button>
+    //     </main>
+    //   )}
+    // </Authenticator>
+
+    <div>
+      {isAuthenticated &&
+        <SiteNav isAuthenticated={isAuthenticated} updateAuthStatus={updateAuthStatus} />
+      }
+      <Routes>
+        <Route path="*" element={<HomePage isAuthenticated={isAuthenticated} />} />
+        <Route path="/" element={<HomePage isAuthenticated={isAuthenticated} />} />
+        <Route path="/login" element={<LoginPage isAuthenticated={isAuthenticated} updateAuthStatus={updateAuthStatus} />} />
+        {/* <Route path="/register" element={<RegisterPage />} />
+        <Route path="/validate" element={<ValidatePage />} />
+        <Route path="/contacts" element={<Contacts isAuthenticated={isAuthenticated} />} /> */}
+      </Routes>
+      {isAuthenticated &&
+        <Footer />
+      }
+    </div>
   );
 };
