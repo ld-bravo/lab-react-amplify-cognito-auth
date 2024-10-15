@@ -1,5 +1,5 @@
 import { signOut } from 'aws-amplify/auth';
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 interface SiteNavProps {

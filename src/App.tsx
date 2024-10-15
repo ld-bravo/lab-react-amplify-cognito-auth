@@ -15,7 +15,6 @@ Amplify.configure(outputs);
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [localSignInDetails, setLocalSignInDetails] = useState<any>(null);
 
   useEffect(() => {
     loadCurrentUser();
@@ -27,8 +26,6 @@ export default function App() {
       console.log("username: ", username);
       console.log("userId: ", userId);
       console.log("signInDetails: ", signInDetails);
-
-      setLocalSignInDetails(signInDetails);
 
       if (signInDetails) {
         setIsAuthenticated(true);
